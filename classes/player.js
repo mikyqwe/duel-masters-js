@@ -1,18 +1,19 @@
 import Battlezone from "./battlezone.js";
+import Deck from "./deck.js";
 import Graveyard from "./graveyard.js";
 import Hand from "./hand.js";
 import Mana from "./mana.js";
 import Shieldzone from "./shieldzone.js";
 
 export default class Player {
-    constructor(deck, name = "unnamed player") {
-        this.deck = deck;
-        this.hand = new Hand([]);
-        this.graveyard = new Graveyard([]);
-        this.shields = new Shieldzone([]);
-        this.battleZone = new Battlezone([]);
-        this.mana = new Mana([]);
-        this.name = name;
+    constructor(playerName) {
+        this.deck = new Deck(playerName);
+        this.hand = new Hand(playerName);
+        this.graveyard = new Graveyard(playerName);
+        this.shields = new Shieldzone(playerName);
+        this.battleZone = new Battlezone(playerName);
+        this.mana = new Mana(playerName);
+        this.name = playerName;
     }
     deal(numberOfCards) {
         //gameOver = false //jocul se termina daca ramai fara carti in pachet/fara scuturi

@@ -1,8 +1,9 @@
 import Deck from './deck.js';
 
 export default class Battlezone extends Deck {
-    constructor(cards) {
-        super("battleZone", cards);
+    constructor(playerName) {
+        super(playerName);
+        this.cards = [];
     }
 
     untapAllCards() { //o sa se intample la inceputul rundei, toate creaturile care inca sunt in viata vor putea ataca

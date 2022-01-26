@@ -1,10 +1,21 @@
 export default class Card {
-    constructor(cardName, manaCost, description) {
-        this.name = cardName;
-        this.manaCost = manaCost;
-        this.description = description;
+    constructor(cardData, playerName) {
+        this.name = cardData.name;
+        this.manaCost = cardData.mana;
         this.canAttack = false; // false = tapped(nu poate ataca)/  true =  untapped(poate ataca)
         this.tappedByOpponent = false;
+        this.image = "images/" + cardData.name + ".png";
+        this.id = this.name + "_" + playerName;
+    }
+
+    getHTML(playerName) {
+        return `<div class="card" id="${this.name+'_' + playerName}">
+            <img class="cardImage" src="${this.image}" />
+            </div>`
+    }
+
+    click = function() {
+        console.log("print");
     }
 
     get getName() {
@@ -13,10 +24,6 @@ export default class Card {
 
     get getManaCost() {
         return this.manaCost;
-    }
-
-    get getDescription() {
-        return this.description;
     }
 
     get getCardPosition() {

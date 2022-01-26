@@ -1,9 +1,11 @@
 import Deck from './deck.js';
 
 export default class Mana extends Deck {
-    constructor(cards) {
-        super("mana", cards);
+    constructor(playerName) {
+        super(playerName);
+        this.cards = [];
     }
+
 
     getAvailableMana() {
         return this.cards.length;

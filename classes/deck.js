@@ -1,16 +1,29 @@
+import Card from './card.js';
+import cardsData from '../cards/cardsData.js';
+
 export default class Deck {
 
-    constructor(deckName, cards) {
-        this.deckName = deckName;
-        if (cards === []) {
-            this.cards = [];
-        } else {
-            this.cards = cards.slice();
+    constructor(playerName) {
+        this.playerName = playerName;
+        let cards = [];
+        for (let i = 0; i < cardsData.creatures.length; i++) {
+            let newCard = new Card(cardsData.creatures[i], playerName);
+            cards.push(newCard);
         }
+        let selectedCards = [];
+        if (cards.length > 40) {
+            for (let i = 0; i < 40; i++) {
+                let pos = Math.floor(math.random() * cards.length);
+                selectedCards.push(cards.splice(pos, 1));
+            }
+            this.cards = selectedCards;
+        }
+        this.cards = cards;
+
     }
 
-    get getDeckName() {
-        return this.deckName;
+    get getPlayerName() {
+        return this.playerName;
     }
     get getCards() {
         return this.cards;

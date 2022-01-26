@@ -4,26 +4,20 @@ import Hand from './classes/hand.js';
 import Graveyard from './classes/graveyard.js';
 import Shieldzone from './classes/shieldzone.js';
 import Battlezone from './classes/battlezone.js';
-import Mana from './classes/mana.js'
-import Player from './classes/player.js'
-
-let card1 = new Card("nume cartea 1", 0, "descriere");
-let card2 = new Card("nume cartea 2", 0, "descriere");
-let card3 = new Card("nume cartea 3", 0, "descriere");
-let card4 = new Card("nume cartea 4", 0, "descriere");
-let card5 = new Card("nume cartea 5", 0, "descriere");
-let card6 = new Card("nume cartea 6", 0, "descriere");
-
-let deck1 = new Deck("name", [card1, card2, card3, card4, card5, card6]);
-
-let deck2 = new Deck("name", [card1, card2, card3, card4, card5, card6]);
-
-let player1 = new Player(deck1);
-let player2 = new Player(deck2);
+import Mana from './classes/mana.js';
+import Player from './classes/player.js';
+import cardsData from './cards/cardsData.js';
 
 
-player2.addShields();
-player2.removeShield()
+let functie = function() {
+    console.log("13");
+}
 
-console.log(player1)
-console.log(player2)
+document.getElementById("card").onclick = functie;
+
+let player = new Player("jucator1")
+let player2 = new Player("jucator2")
+
+console.log(player)
+
+let card = new Card(cardsData.creatures[0]);
