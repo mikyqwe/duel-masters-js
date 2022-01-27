@@ -13,12 +13,13 @@ export default class Deck {
         let selectedCards = [];
         if (cards.length > 40) {
             for (let i = 0; i < 40; i++) {
-                let pos = Math.floor(math.random() * cards.length);
+                let pos = Math.floor(Math.random() * cards.length);
                 selectedCards.push(cards.splice(pos, 1));
             }
             this.cards = selectedCards;
+        } else {
+            this.cards = cards;
         }
-        this.cards = cards;
 
     }
 

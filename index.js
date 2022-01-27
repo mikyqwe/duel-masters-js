@@ -16,7 +16,6 @@ let functie = function() {
 document.getElementById("card").onclick = functie;
 
 let player = new Player("jucator1")
-let player2 = new Player("jucator2")
 
 console.log(player)
 
