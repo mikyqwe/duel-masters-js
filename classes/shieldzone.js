@@ -5,5 +5,4 @@ export default class Shieldzone extends Deck {
         super(playerName);
         this.cards = [];
     }
-
 }

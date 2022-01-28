@@ -23,13 +23,6 @@ export default class Deck {
 
     }
 
-    get getPlayerName() {
-        return this.playerName;
-    }
-    get getCards() {
-        return this.cards;
-    }
-
     shuffle() {
         let currentIndex = this.cards.length,
             randomIndex;
@@ -66,6 +59,4 @@ export default class Deck {
         }
 
     }
-
-
 }

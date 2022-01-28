@@ -15,6 +15,7 @@ export default class Player {
         this.mana = new Mana(playerName);
         this.name = playerName;
     }
+
     deal(numberOfCards) {
         //gameOver = false //jocul se termina daca ramai fara carti in pachet/fara scuturi
         if (this.deck.cards.length >= numberOfCards)
@@ -22,10 +23,6 @@ export default class Player {
                 let card = this.deck.drawCard();
                 this.hand.addCard(card);
             }
-        else {
-            console.log("player does not have enough cards to draw. game over.");
-            //??
-        }
     }
 
     addToMana(index) {
@@ -38,7 +35,7 @@ export default class Player {
     }
 
     addToBattleZone(index) {
-        if (this.mana.getAvailableMana() >= this.hand.cards[index].getManaCost) {
+        if (this.mana.getAvailableMana() >= this.hand.cards[index].manaCost) {
             this.battleZone.addCard(this.hand.removeCard(index));
         }
     }
@@ -56,11 +53,4 @@ export default class Player {
             this.hand.addCard(this.shields.drawCard());
         }
     }
-
-
-
-
-
-
-
 }

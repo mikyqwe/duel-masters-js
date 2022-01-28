@@ -254,3 +254,30 @@
     border-style: solid;
     border-color: red;
 }
+
+.gameOver {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.winnerText {
+    font-size: 5em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+.winMotive {
+    font-size: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+.playerWinner {
+    background-color: green;
+}
+
+.pcWinner {
+    background-color: rgb(109, 32, 32);
+}

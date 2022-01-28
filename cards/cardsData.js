@@ -31,8 +31,8 @@
          },
          {
              "name": "Aqua_Vehicle",
-             "mana": 8,
-             "damage": 5000,
+             "mana": 2,
+             "damage": 1000,
          },
          {
              "name": "Armored_Walker_Urherion",

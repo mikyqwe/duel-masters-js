@@ -5,5 +5,4 @@ export default class Hand extends Deck {
         super(playerName);
         this.cards = [];
     }
-
 }
