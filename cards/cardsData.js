@@ -5,7 +5,7 @@
              "damage": 9000,
          },
          {
-             "name": "Aeris,Ancient_Giant",
+             "name": "Ancient_Giant",
              "mana": 8,
              "damage": 9000,
          },

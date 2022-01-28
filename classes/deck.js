@@ -14,7 +14,7 @@ export default class Deck {
         if (cards.length > 40) {
             for (let i = 0; i < 40; i++) {
                 let pos = Math.floor(Math.random() * cards.length);
-                selectedCards.push(cards.splice(pos, 1));
+                selectedCards.push(cards.splice(pos, 1)[0]);
             }
             this.cards = selectedCards;
         } else {

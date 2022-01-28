@@ -9,7 +9,7 @@ export default class Card {
     }
 
     getHTML(playerName) {
-        return `<div class="card" id="${this.name+'_' + playerName}">
+        return `<div class="card" id="${this.id}">
             <img class="cardImage" src="${this.image}" />
             </div>`
     }

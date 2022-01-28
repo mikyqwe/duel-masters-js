@@ -5,6 +5,4 @@ export default class Graveyard extends Deck {
         super(playerName);
         this.cards = [];
     }
-
-
 }
