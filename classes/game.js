@@ -182,6 +182,9 @@ export default class Game {
                         if(card.damage > 0) {
                             this.player.battleZone.addCard(card);
                         }
+                        else {
+                            this.player.graveyard.addCard(card);
+                        }
 
                         this.player.mana.substractMana(card.manaCost);
 
@@ -200,7 +203,7 @@ export default class Game {
                 let cardHTML = document.getElementById(card.id);
                 
                 cardHTML.onclick = function() {
-                    if((card.selected === undefined || card.selected === false) && card.canAttack === true) {
+                    if((card.selected === undefined || !card.selected) && card.canAttack && !card.fatigued) {
                         for(let c of this.player.battleZone.cards) {
                             if(c.selected) {
                                 c.selected = false;
@@ -230,7 +233,7 @@ export default class Game {
                         }
 
                         this.pc.removeShield();
-                        card.canAttack = false;
+                        card.tap();
                         card.selected = false;
                         break;
                     }
@@ -250,7 +253,7 @@ export default class Game {
 
                         if(card.selected) {
                             if(card.damage > pcCard.damage) {
-                                card.canAttack = false;
+                                card.tap();
                                 this.pc.addToGraveyard(i);
                             }
                             else if(card.damage === pcCard.damage) {
@@ -258,7 +261,7 @@ export default class Game {
                                 this.player.addToGraveyard(j);
                             }
                             else {
-                                pcCard.canAttack = false;
+                                pcCard.tap();
                                 this.player.addToGraveyard(j);
                             }
 
@@ -275,6 +278,9 @@ export default class Game {
             this.selectStageButton(stage);
 
             //End turn for player
+            this.player.battleZone.unfatigueAllCards();
+            this.player.battleZone.untapAllCards();
+
             //Start turn for PC. PC receives a card, his battlezone's cards are untapped and mana refreshed
             if(this.pc.deck.cards.length === 0) {
                 this.gameOver("player", "The PC has no more cards left in the deck");
@@ -300,6 +306,9 @@ export default class Game {
 
                         if(card.damage > 0) {
                             this.pc.battleZone.addCard(card);
+                        }
+                        else {
+                            this.pc.graveyard.addCard(card);
                         }
 
                         //Spellcard ability for PC
@@ -329,32 +338,44 @@ export default class Game {
                 }
             }
 
+            //PC Attacks
             for(let i = this.pc.battleZone.cards.length - 1; i >= 0; i--) {
                 let pcCard = this.pc.battleZone.cards[i];
-                let attacked = false;
 
-                for(let j = this.player.battleZone.cards.length - 1; j >= 0; j--) {
-                    let playerCard = this.player.battleZone.cards[j];
+                if(!pcCard.fatigued && pcCard.canAttack) {
+                    let attacked = false;
 
-                    if(pcCard.damage >= playerCard.damage) {
-                        pcCard.canAttack = false;
-                        this.player.addToGraveyard(j);    
-                        attacked = true;
+                    for(let j = this.player.battleZone.cards.length - 1; j >= 0; j--) {
+                        let playerCard = this.player.battleZone.cards[j];
+
+                        if(pcCard.damage > playerCard.damage && playerCard.canAttack) {
+                            pcCard.tap();
+                            this.player.addToGraveyard(j);    
+                            attacked = true;
+                        }
+                        else if(pcCard.damage === playerCard.damage && playerCard.canAttack) {
+                            this.pc.addToGraveyard(i);
+                            this.player.addToGraveyard(j);
+                            attacked = true;
+                        }
                     }
-                }
 
-                if(!attacked) {
-                    if(this.player.shields.isEmpty()) {
-                        this.gameOver("pc", "TODOMEDA!");
-                        return;
+                    if(!attacked) {
+                        if(this.player.shields.isEmpty()) {
+                            this.gameOver("pc", "TODOMEDA!");
+                            return;
+                        }
+
+                        this.player.removeShield();
+                        pcCard.tap();
                     }
-
-                    this.player.removeShield();
-                    pcCard.canAttack = false;
                 }
             }
 
             //End turn for PC
+            this.pc.battleZone.unfatigueAllCards();
+            this.pc.battleZone.untapAllCards();
+
             //Player receives a card, his battlezone's cards are untapped and mana refreshed
             if(this.player.deck.cards.length === 0) {
                 this.gameOver("pc", "You have no more cards left in the deck");

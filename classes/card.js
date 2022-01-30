@@ -3,6 +3,8 @@ export default class Card {
         this.name = cardData.name;
         this.manaCost = cardData.mana;
         this.canAttack = true; // false = tapped(nu poate ataca)/  true =  untapped(poate ataca)
+        this.canAttackIn = 0;
+        this.fatigued = cardData.damage === 0 ? false : true; // false = poate fi selectata (si ataca) / true = nu poate fi selectata(si ataca)
         this.image = "images/" + cardData.name + ".png";
         this.id = this.name + "_" + playerName;
         this.damage = cardData.damage;
@@ -12,6 +14,21 @@ export default class Card {
         }
         else {
             this.summonAbility = function(game) {};
+        }
+    }
+
+    tap() {
+        this.canAttack = false;
+        this.canAttackIn = 2;
+    }
+
+    untap() {
+        if(this.canAttackIn > 0) {
+            this.canAttackIn -= 1;
+        }
+
+        if(this.canAttackIn === 0) {
+            this.canAttack = true;
         }
     }
 

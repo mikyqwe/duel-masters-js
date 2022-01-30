@@ -6,19 +6,25 @@ export default class Battlezone extends Deck {
         this.cards = [];
     }
 
+    unfatigueAllCards() {
+        for(let card of this.cards) {
+            card.fatigued = false;
+        }
+    }
+
     untapAllCards() { //o sa se intample la inceputul rundei, toate creaturile care inca sunt in viata vor putea ataca
         for (let i = 0; i < this.cards.length; i++) {
-            this.cards[i].canAttack = true;
+            this.cards[i].untap();
         }
     }
 
     untapCard(index) {
         if (index >= 0 && index < this.cards.length)
-            this.cards[index].canAttack = true;
+            this.cards[index].untap();
     }
 
     tapCard(index) {
         if (index >= 0 && index < this.cards.length)
-            this.cards[index].canAttack = false;
+            this.cards[index].tap();
     }
 }
