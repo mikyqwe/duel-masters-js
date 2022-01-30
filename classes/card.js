@@ -6,6 +6,13 @@ export default class Card {
         this.image = "images/" + cardData.name + ".png";
         this.id = this.name + "_" + playerName;
         this.damage = cardData.damage;
+
+        if(cardData.summonAbility !== undefined) {
+            this.summonAbility = cardData.summonAbility;
+        }
+        else {
+            this.summonAbility = function(game) {};
+        }
     }
 
     getHTML(playerName) {

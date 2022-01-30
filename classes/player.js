@@ -19,7 +19,7 @@ export default class Player {
     deal(numberOfCards) {
         //gameOver = false //jocul se termina daca ramai fara carti in pachet/fara scuturi
         if (this.deck.cards.length >= numberOfCards)
-            for (let i = 0; i < numberOfCards; i++) {
+            for (let i = numberOfCards - 1; i >= 0; i--) {
                 let card = this.deck.drawCard();
                 this.hand.addCard(card);
             }

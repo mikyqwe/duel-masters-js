@@ -18,201 +18,260 @@
 }
 
 .playerContainer {
-    width: calc(100%-0.6rem);
     height: 60%;
-    margin: 0.6rem;
     display: flex;
     flex-direction: column;
 }
 
 .pcContainer {
-    width: calc(100%-0.6rem);
     height: 40%;
-    margin: 0.6rem;
     display: flex;
     flex-direction: column;
 }
 
-.playerBattlezone {
-    width: calc(100%-0.3rem);
-    height: 50%;
-    background-color: rgb(255, 255, 255);
-    margin: 0.3rem;
-    overflow-x: auto;
+.playerBattlezoneContainer {
+    height: 47%;
+    margin: 0.3vw;
+    background-color: white;
+    border-radius: 1vw;
     display: flex;
-    flex-direction: row;
+    justify-content: space-around;
     align-items: center;
 }
 
+.playerBattlezone {
+    height: 100%;
+    background-color: white;
+    overflow-x: auto;
+    display: flex;
+    align-items: center;
+    border-radius: 1vw;
+}
+
 .playerView {
-    width: calc(100%-0.3rem);
-    height: 50%;
-    margin: 0.3rem;
+    height: 47%;
+    margin: 0.3vw;
     display: flex;
     flex-direction: row;
 }
 
 .pcView {
-    width: calc(100%-0.3rem);
-    height: 23.5%;
-    margin: 0.3rem;
+    height: 23%;
+    margin: 0.3vw;
     display: flex;
     flex-direction: row;
 }
 
+.pcBattlezoneContainer {
+    height: 70.5%;
+    margin: 0.3vw;
+    background-color: white;
+    border-radius: 1vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .pcBattlezone {
-    width: calc(100%-0.3rem);
-    height: 76.5%;
+    height: 100%;
     background-color: rgb(255, 255, 255);
-    margin: 0.3rem;
     overflow-x: auto;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    border-radius: 1vw;
 }
 
 .playerShields {
     width: 10%;
-    height: calc(100%-0.2rem);
-    margin: 0.2rem;
+    margin: 0.2vw;
     justify-content: center;
     align-items: center;
     display: flex;
     flex-direction: column;
     background-color: rgb(86, 124, 160);
+    border-radius: 1vw;
+}
+
+.playerHandContainer {
+    width: 68%;
+    margin: 0.2vw;
+    background-color: white;
+    border-radius: 1vw;
+    display: flex;
+    justify-content: center;
 }
 
 .playerHand {
-    width: 70%;
-    height: calc(100%-0.2rem);
+    height: 100%;
     background-color: rgb(255, 255, 255);
-    margin: 0.2rem;
-    overflow-x: auto;
     display: flex;
-    flex-direction: row;
     align-items: center;
+    border-radius: 1vw;
+    overflow: auto;
 }
 
 .playerMana {
     width: 10%;
-    height: calc(100%-0.2rem);
     background-color: rgb(0, 130, 134);
-    margin: 0.2rem;
+    margin: 0.2vw;
     justify-content: center;
     align-items: center;
     display: flex;
     flex-direction: column;
+    border-radius: 1vw;
+    transition: transform .2s ease-out;
+}
+
+.playerMana:hover {
+    transform: scale(1.03);
 }
 
 .playerGraveyard {
     width: 10%;
-    height: calc(100%-0.2rem);
     background-color: rgb(0, 0, 0);
-    margin: 0.2rem;
+    margin: 0.2vw;
     justify-content: center;
     align-items: center;
     display: flex;
     flex-direction: column;
+    border-radius: 1vw;
 }
 
 .pcShields {
     width: 20%;
-    height: calc(100%-0.2rem);
     background-color: rgb(86, 124, 160);
-    margin: 0.2rem;
+    margin: 0.2vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    border-radius: 1vw;
+    transition: transform .2s ease-out;
+}
+
+.pcShields:hover {
+    transform: scale(1.03);
 }
 
 .pcMana {
     width: 20%;
-    height: calc(100%-0.2rem);
     background-color: rgb(118, 218, 98);
-    margin: 0.2rem;
+    margin: 0.2vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    border-radius: 1vw;
 }
 
 .manaMenu {
     width: 15%;
-    height: calc(100%-0.2rem);
     background-color: rgb(118, 218, 98);
-    margin: 0.2rem;
+    margin: 0.2vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
+    font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
+    border-radius: 1vw;
+    border-style: solid;
+    border-color: rgb(118, 218, 98);
+    box-sizing: border-box;
+    transition: transform .2s ease-out, border-width .3s ease-out;
+}
+
+.manaMenu:hover {
+    transform: scale(1.03);
 }
 
 .summonMenu {
     width: 15%;
-    height: calc(100%-0.2rem);
     background-color: rgb(118, 218, 98);
-    margin: 0.2rem;
+    margin: 0.2vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
+    font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
+    border-radius: 1vw;
+    border-style: solid;
+    border-color: rgb(118, 218, 98);
+    box-sizing: border-box;
+    transition: transform .2s ease-out, border-width .3s ease-out;
+}
+
+.summonMenu:hover {
+    transform: scale(1.03);
 }
 
 .attackMenu {
     width: 15%;
-    height: calc(100%-0.2rem);
     background-color: rgb(118, 218, 98);
-    margin: 0.2rem;
+    margin: 0.2vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
+    font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
+    border-radius: 1vw;
+    border-style: solid;
+    border-color: rgb(118, 218, 98);
+    box-sizing: border-box;
+    transition: transform .2s ease-out, border-width .3s ease-out;
+}
+
+.attackMenu:hover {
+    transform: scale(1.03);
 }
 
 .endTurnMenu {
     width: 15%;
-    height: calc(100%-0.2rem);
     background-color: rgb(118, 218, 98);
-    margin: 0.2rem;
+    margin: 0.2vw;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
+    font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
+    border-radius: 1vw;
+    border-style: solid;
+    border-color: rgb(118, 218, 98);
+    box-sizing: border-box;
+    transition: transform .2s ease-out, border-width .3s ease-out;
+}
+
+.endTurnMenu:hover {
+    transform: scale(1.03);
 }
 
 .pcShieldsText {
-    font-size: 2em;
+    font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .pcManaText {
-    font-size: 2em;
+    font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .playerShieldsText {
-    font-size: 2em;
+    font-size: 1.6vw;
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
 }
 
 .playerManaText {
-    font-size: 2em;
+    font-size: 1.6vw;
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
 }
 
 .playerGraveyardText {
-    font-size: 2em;
+    font-size: 1.6vw;
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     color: white;
@@ -227,30 +286,42 @@
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    border-radius: 0.5vw;
 }
 
 .card {
-    width: 10rem;
-    height: 92%;
-    display: inline-block;
-    border: 0.3rem;
+    height: 90%;
+    aspect-ratio: 3/4;
+    display: flex;
+    margin: 0.05vw;
     border-style: solid;
     border-color: white;
-    flex-shrink: 0;
+    border-radius: 1vw;
+    box-sizing: border-box;
+    transition: transform .3s ease-out, border-width .2s ease-out;
+}
+
+.card:hover {
+    transform: translateY(-0.5vw);
 }
 
 .cardSelected {
+    border-width: 0.4vw;
     border-color: rgb(179, 9, 9);
+    background-color: rgb(179, 9, 9);
 }
 
 .tappedCard {
+    aspect-ratio: 3/5;
+    box-sizing: content-box;
     transform: rotate(90deg);
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
+    pointer-events: none;
 }
 
 .menuSelected {
-    border: 0.3rem;
+    border-width: 0.3vw;
     border-style: solid;
     border-color: red;
 }
@@ -263,13 +334,13 @@
 }
 
 .winnerText {
-    font-size: 5em;
+    font-size: 5vw;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
 
 .winMotive {
-    font-size: 2em;
+    font-size: 2vw;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
@@ -280,4 +351,23 @@
 
 .pcWinner {
     background-color: rgb(109, 32, 32);
+}
+
+::-webkit-scrollbar {
+    width: 1vw;
+    height: 1.5vh;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px grey; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: grey; 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(85, 85, 85); 
 }

@@ -22,7 +22,7 @@ export default class Game {
         //todo trage 5 carti momentan tragem doar 2
 
         this.pc.deal(5);
-        this.player.deal(5);
+        this.player.deal(6);
 
         this.addStageButtonEvents();
         this.selectStage("manaStage");
@@ -91,7 +91,7 @@ export default class Game {
         playerManaButton.onclick = undefined;
 
         //Remove battlezone event
-        let playerBattlezoneButton = document.getElementById("playerBattlezone");
+        let playerBattlezoneButton = document.getElementById("playerBattlezoneContainer");
         playerBattlezoneButton.onclick = undefined;
 
         //Remove PC Shields event
@@ -169,7 +169,7 @@ export default class Game {
 
             //Player battlezone event; when the player clicks the battlezone
             //and a card is selected the card will be added to the battlezone
-            let playerBattlezone = document.getElementById("playerBattlezone");
+            let playerBattlezone = document.getElementById("playerBattlezoneContainer");
             playerBattlezone.onclick = function() {
                 for(let i = this.player.hand.cards.length - 1; i >= 0; i--) {
                     let card = this.player.hand.cards[i];
@@ -178,8 +178,14 @@ export default class Game {
                     if(card.selected && this.player.mana.getAvailableMana() >= card.manaCost) {
                         card.selected = undefined;
                         this.player.hand.removeCard(i);
-                        this.player.battleZone.addCard(card);
+
+                        if(card.damage > 0) {
+                            this.player.battleZone.addCard(card);
+                        }
+
                         this.player.mana.substractMana(card.manaCost);
+
+                        card.summonAbility(this, this.player, card);
                     }
                 }
 
@@ -268,7 +274,88 @@ export default class Game {
         else if(stage === "endTurnStage") {
             this.selectStageButton(stage);
 
-            //End turn for player. Player receives a card, his battlezone's cards are untapped and mana refreshed
+            //End turn for player
+            //Start turn for PC. PC receives a card, his battlezone's cards are untapped and mana refreshed
+            if(this.pc.deck.cards.length === 0) {
+                this.gameOver("player", "The PC has no more cards left in the deck");
+                return;
+            }
+            this.pc.deal(1);
+            this.pc.battleZone.untapAllCards();
+            this.pc.mana.refreshMana();
+
+            //AI
+            let madeAnAction = true;
+
+            while(madeAnAction) {
+                madeAnAction = false;
+
+                //AI adds cards to battlezone
+                for(let i = this.pc.hand.cards.length - 1; i >= 0; i--) {
+                    let card = this.pc.hand.cards[i];
+    
+                    if(card.manaCost <= this.pc.mana.getAvailableMana()) {
+                        this.pc.hand.removeCard(i);
+                        this.pc.mana.substractMana(card.manaCost);
+
+                        if(card.damage > 0) {
+                            this.pc.battleZone.addCard(card);
+                        }
+
+                        //Spellcard ability for PC
+                        card.summonAbility(this, this.pc, card);
+
+                        madeAnAction = true;
+                    }
+                }
+
+                let maxMana = -1;
+                let maxManaCardIndex = -1;
+
+                for(let i = this.pc.hand.cards.length - 1; i >= 0; i--) {
+                    let card = this.pc.hand.cards[i];
+
+                    if(card.manaCost > maxMana) {
+                        maxMana = card.manaCost;
+                        maxManaCardIndex = i;
+                    }
+                }
+
+                if(maxMana !== -1) {
+                    let removedCard = this.pc.hand.removeCard(maxManaCardIndex);
+                    this.pc.mana.addCard(removedCard);
+
+                    madeAnAction = true;
+                }
+            }
+
+            for(let i = this.pc.battleZone.cards.length - 1; i >= 0; i--) {
+                let pcCard = this.pc.battleZone.cards[i];
+                let attacked = false;
+
+                for(let j = this.player.battleZone.cards.length - 1; j >= 0; j--) {
+                    let playerCard = this.player.battleZone.cards[j];
+
+                    if(pcCard.damage >= playerCard.damage) {
+                        pcCard.canAttack = false;
+                        this.player.addToGraveyard(j);    
+                        attacked = true;
+                    }
+                }
+
+                if(!attacked) {
+                    if(this.player.shields.isEmpty()) {
+                        this.gameOver("pc", "TODOMEDA!");
+                        return;
+                    }
+
+                    this.player.removeShield();
+                    pcCard.canAttack = false;
+                }
+            }
+
+            //End turn for PC
+            //Player receives a card, his battlezone's cards are untapped and mana refreshed
             if(this.player.deck.cards.length === 0) {
                 this.gameOver("pc", "You have no more cards left in the deck");
                 return;
@@ -277,35 +364,6 @@ export default class Game {
             this.player.deal(1);
             this.player.battleZone.untapAllCards();
             this.player.mana.refreshMana();
-
-            //AI
-            for(let i = this.pc.hand.cards.length - 1; i >= 0; i--) {
-                let card = this.pc.hand.cards[i];
-
-                if(card.manaCost >= 4) {
-                    this.pc.hand.removeCard(i);
-                    this.pc.mana.addCard(card);
-                }
-            }
-
-            for(let i = this.pc.hand.cards.length - 1; i >= 0; i--) {
-                let card = this.pc.hand.cards[i];
-
-                if(card.manaCost <= this.pc.mana.getAvailableMana()) {
-                    this.pc.hand.removeCard(i);
-                    this.pc.mana.substractMana(card.manaCost);
-                    this.pc.battleZone.addCard(card);
-                }
-            }
-
-            //End turn for PC. PC receives a card, his battlezone's cards are untapped and mana refreshed
-            if(this.pc.deck.cards.length === 0) {
-                this.gameOver("player", "The PC has no more cards left in the deck");
-                return;
-            }
-            this.pc.deal(1);
-            this.pc.battleZone.untapAllCards();
-            this.pc.mana.refreshMana();
 
             //Change back to player's mana turn
             this.selectStageButton("manaStage");
