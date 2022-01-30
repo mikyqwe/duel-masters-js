@@ -123,6 +123,7 @@
 }
 
 .playerMana:hover {
+    cursor: pointer;
     transform: scale(1.03);
 }
 
@@ -150,12 +151,13 @@
 }
 
 .pcShields:hover {
+    cursor: pointer;
     transform: scale(1.03);
 }
 
 .pcMana {
     width: 20%;
-    background-color: rgb(118, 218, 98);
+    background-color: rgb(0, 130, 134);
     margin: 0.2vw;
     display: flex;
     flex-direction: row;
@@ -182,6 +184,7 @@
 }
 
 .manaMenu:hover {
+    cursor: pointer;
     transform: scale(1.03);
 }
 
@@ -203,6 +206,7 @@
 }
 
 .summonMenu:hover {
+    cursor: pointer;
     transform: scale(1.03);
 }
 
@@ -224,6 +228,7 @@
 }
 
 .attackMenu:hover {
+    cursor: pointer;
     transform: scale(1.03);
 }
 
@@ -245,6 +250,7 @@
 }
 
 .endTurnMenu:hover {
+    cursor: pointer;
     transform: scale(1.03);
 }
 
@@ -299,9 +305,11 @@
     border-radius: 1vw;
     box-sizing: border-box;
     transition: transform .3s ease-out, border-width .2s ease-out;
+    position: relative;
 }
 
 .card:hover {
+    cursor: pointer;
     transform: translateY(-0.5vw);
 }
 
@@ -370,4 +378,12 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgb(85, 85, 85); 
+}
+
+.fatigue {
+    position: absolute;
+    width: 3vw;
+    height: 3vw;
+    top: -0.5vw;
+    right: 0vw;
 }

@@ -48,7 +48,7 @@ export default class Game {
         playerBattlezone.innerHTML = "";
 
         for(let i = 0; i < this.player.battleZone.cards.length; i++) {
-            playerBattlezone.innerHTML += this.player.battleZone.cards[i].getHTML();
+            playerBattlezone.innerHTML += this.player.battleZone.cards[i].getHTML(true);
         }
 
         //Update player's shields
@@ -75,7 +75,7 @@ export default class Game {
 
         for(let i = 0; i < this.pc.battleZone.cards.length; i++)
         {
-            pcBattlezone.innerHTML += this.pc.battleZone.cards[i].getHTML();
+            pcBattlezone.innerHTML += this.pc.battleZone.cards[i].getHTML(true);
         }
 
         //Update PC's shields
@@ -232,7 +232,7 @@ export default class Game {
                             return;
                         }
 
-                        this.pc.removeShield();
+                        this.pc.removeShield(card.shieldsToBreak);
                         card.tap();
                         card.selected = false;
                         break;
@@ -366,7 +366,7 @@ export default class Game {
                             return;
                         }
 
-                        this.player.removeShield();
+                        this.player.removeShield(pcCard.shieldsToBreak);
                         pcCard.tap();
                     }
                 }

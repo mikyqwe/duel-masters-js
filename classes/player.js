@@ -48,9 +48,14 @@ export default class Player {
         this.shields.addCard(this.deck.drawCard());
     }
 
-    removeShield() {
-        if (this.shields.cards.length > 0) {
-            this.hand.addCard(this.shields.drawCard());
+    removeShield(shieldsToBreak) {
+        for(let i = 0; i < shieldsToBreak; i++) {
+            if (this.shields.cards.length > 0) {
+                this.hand.addCard(this.shields.drawCard());
+            }
+            else {
+                break;
+            }
         }
     }
 }

@@ -1,82 +1,3 @@
-let drawCards = function(player, cardsToDraw) {
-    player.deal(cardsToDraw);
-}
-
-let returnCardsFromMana = function(player, cardsToReturn) {
-    for(let i = 0; i < cardsToReturn; i++) {
-        let card = player.mana.drawCard();
-        card.canAttack = true; 
-        player.hand.addCard(card);
-    }
-}
-
-let drawNewHand = function(game) {
-    let cardsRemovedPlayer = 0;
-
-    for(let i = game.player.hand.cards.length - 1; i >= 0; i--) {
-        game.player.deck.addCard(game.player.hand.drawCard());
-        cardsRemovedPlayer += 1;
-    }
-    game.player.deck.shuffle();
-    game.player.deal(cardsRemovedPlayer);
-
-    let cardsRemovedPc = 0;
-
-    for(let i = game.pc.hand.cards.length - 1; i >= 0; i--) {
-        game.pc.deck.addCard(game.pc.hand.drawCard());
-        cardsRemovedPc += 1;
-    }
-    game.pc.deck.shuffle();
-    game.pc.deal(cardsRemovedPc);
-}
-
-let compareManaAndAddToMana = function(game, player) {
-    let opponent = undefined;
-
-    if(player.name === "PC") {
-        opponent = game.player;
-    }
-    else {
-        opponent = game.pc;
-    }
-
-    if(opponent.mana.cards.length > player.mana.cards.length) {
-        player.mana.addCard(player.deck.drawCard());
-        player.mana.addCard(player.deck.drawCard());
-    }
-}
-
-let returnManaSpellCardToHand = function(player) {
-    let spellCard = undefined;
-
-    for(let card of player.mana.cards) {
-        if(card.damage === 0) {
-            spellCard = player.mana.removeCardById(card.id);
-            break;
-        }
-    }
-
-    if(spellCard !== undefined) {
-        spellCard.canAttack = true;
-        player.hand.addCard(spellCard);
-    }
-}
-
-let opponentDiscardAllCards = function(game, player) {
-    let opponent = undefined;
-
-    if(player.name === "PC") {
-        opponent = game.player;
-    }
-    else {
-        opponent = game.pc;
-    }
-
-    for(let i = opponent.hand.cards.length - 1; i >= 0; i--) {
-        opponent.deck.addCard(opponent.hand.removeCard(i));
-    }
-}
-
 let cardsData = {
     "cards": [{
             "name": "Aeris,_Flight_Elemental",
@@ -87,6 +8,7 @@ let cardsData = {
             "name": "Ancient_Giant",
             "mana": 8,
             "damage": 9000,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Aqua_Hulcus",
@@ -132,22 +54,25 @@ let cardsData = {
             "name": "Billion-Degree_Dragon",
             "mana": 10,
             "damage": 15000,
+            "shieldsToBreak": 3,
         },
         {
             "name": "Bolshack_Dragon",
             "mana": 6,
             "damage": 6000,
+            "shieldsToBreak": 2,
         },
-
         {
             "name": "Boltail_Dragon",
             "mana": 7,
             "damage": 9000,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Bombat,_General_of_Speed",
             "mana": 5,
             "damage": 3000,
+            "fatigued": false,
         },
         {
             "name": "Bone_Assassin,_the_Ripper",
@@ -208,11 +133,13 @@ let cardsData = {
             "name": "Death_Cruzer,_the_Annihilator",
             "mana": 7,
             "damage": 13000,
+            "shieldsToBreak": 3,
         },
         {
             "name": "Deathliger,_Lion_of_Chaos",
             "mana": 7,
             "damage": 9000,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Draglide",
@@ -241,6 +168,7 @@ let cardsData = {
             "name": "Gatling_Skyterror",
             "mana": 7,
             "damage": 7000,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Gigaberos",
@@ -267,6 +195,7 @@ let cardsData = {
             "name": "Hanusa,_Radiance_Elemental",
             "mana": 7,
             "damage": 9500,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Iere,_Vizier_of_Bullets",
@@ -283,16 +212,21 @@ let cardsData = {
             "name": "King_Depthcon",
             "mana": 7,
             "damage": 6000,
+            "shieldsToBreak": 2,
         },
         {
             "name": "King_Ripped_Hide",
             "mana": 7,
             "damage": 5000,
+            "summonAbility": function(game, player, card) {
+                player.deal(2);
+            }
         },
         {
             "name": "La_Guile,_Seeker_of_Skyfire",
             "mana": 6,
             "damage": 7500,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Lah,_Purification_Enforcer",
@@ -381,18 +315,25 @@ let cardsData = {
         },
         {
             "name": "Storm_Shell",
-            "mana": 7,
+            "mana": 2,
             "damage": 2000,
         },
         {
             "name": "Swamp_Worm",
-            "mana": 7,
+            "mana": 2,
             "damage": 2000,
         },
         {
             "name": "Thorny_Mandra",
             "mana": 5,
             "damage": 4000,
+            "summonAbility": function(game, player, card) {
+                let playerCard = player.graveyard.drawCard();
+
+                if (playerCard !== undefined) {
+                    player.mana.addCard(playerCard);
+                }
+            }
         },
         {
             "name": "Tower_Shell",
@@ -418,11 +359,37 @@ let cardsData = {
             "name": "Urth,_Purifying_Elemental",
             "mana": 4,
             "damage": 6000,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Vampire_Silphy",
             "mana": 8,
             "damage": 4000,
+            "summonAbility": function(game, player, card) {
+                let opponent = undefined;
+                if (player.name === "PC") {
+                    opponent = game.player;
+                } else {
+                    opponent = game.pc;
+                }
+
+                for (let i = opponent.battleZone.cards.length - 1; i >= 0; i--) {
+                    let opponentCard = opponent.battleZone.cards[i];
+
+                    if (opponentCard.damage <= 3000) {
+                        let removedCard = opponent.battleZone.removeCard(i);
+                        opponent.graveyard.addCard(removedCard);
+                    }
+                }
+                for (let i = player.battleZone.cards.length - 1; i >= 0; i--) {
+                    let playerCard = player.battleZone.cards[i];
+
+                    if (playerCard.damage <= 3000) {
+                        let removedCard = player.battleZone.removeCard(i);
+                        player.graveyard.addCard(removedCard);
+                    }
+                }
+            }
         },
         {
             "name": "Wailing_Shadow_Belbetphlo",
@@ -438,13 +405,14 @@ let cardsData = {
             "name": "Zagaan,_Knight_of_Darkness",
             "mana": 6,
             "damage": 7000,
+            "shieldsToBreak": 2,
         },
         {
             "name": "Brain_Serum",
             "mana": 4,
             "damage": 0,
             "summonAbility": function(game, player, card) {
-                drawCards(player, 2);
+                player.deal(2);
             }
         },
         {
@@ -452,7 +420,23 @@ let cardsData = {
             "mana": 3,
             "damage": 0,
             "summonAbility": function(game, player, card) {
-                drawNewHand(game);
+                let cardsRemovedPlayer = 0;
+
+                for (let i = game.player.hand.cards.length - 1; i >= 0; i--) {
+                    game.player.deck.addCard(game.player.hand.drawCard());
+                    cardsRemovedPlayer += 1;
+                }
+                game.player.deck.shuffle();
+                game.player.deal(cardsRemovedPlayer);
+
+                let cardsRemovedPc = 0;
+
+                for (let i = game.pc.hand.cards.length - 1; i >= 0; i--) {
+                    game.pc.deck.addCard(game.pc.hand.drawCard());
+                    cardsRemovedPc += 1;
+                }
+                game.pc.deck.shuffle();
+                game.pc.deal(cardsRemovedPc);
             }
         },
         {
@@ -460,7 +444,13 @@ let cardsData = {
             "mana": 2,
             "damage": 0,
             "summonAbility": function(game, player, card) {
-                returnCardsFromMana(player, 1);
+                let playerCard = player.mana.drawCard();
+
+                if (playerCard !== undefined) {
+                    playerCard.canAttack = true;
+
+                    player.hand.addCard(playerCard);
+                }
             }
         },
         {
@@ -468,7 +458,18 @@ let cardsData = {
             "mana": 4,
             "damage": 0,
             "summonAbility": function(game, player, card) {
-                compareManaAndAddToMana(game, player);
+                let opponent = undefined;
+
+                if (player.name === "PC") {
+                    opponent = game.player;
+                } else {
+                    opponent = game.pc;
+                }
+
+                if (opponent.mana.cards.length > player.mana.cards.length) {
+                    player.mana.addCard(player.deck.drawCard());
+                    player.mana.addCard(player.deck.drawCard());
+                }
             }
         },
         {
@@ -476,7 +477,19 @@ let cardsData = {
             "mana": 3,
             "damage": 0,
             "summonAbility": function(game, player, card) {
-                returnManaSpellCardToHand(player);
+                let spellCard = undefined;
+
+                for (let card of player.mana.cards) {
+                    if (card.damage === 0) {
+                        spellCard = player.mana.removeCardById(card.id);
+                        break;
+                    }
+                }
+
+                if (spellCard !== undefined) {
+                    spellCard.canAttack = true;
+                    player.hand.addCard(spellCard);
+                }
             }
         },
         {
@@ -484,61 +497,112 @@ let cardsData = {
             "mana": 7,
             "damage": 0,
             "summonAbility": function(game, player, card) {
-                opponentDiscardAllCards(game, player);
+                let opponent = undefined;
+
+                if (player.name === "PC") {
+                    opponent = game.player;
+                } else {
+                    opponent = game.pc;
+                }
+
+                for (let i = opponent.hand.cards.length - 1; i >= 0; i--) {
+                    opponent.deck.addCard(opponent.hand.removeCard(i));
+                }
             }
         },
         {
             "name": "Mana_Nexus",
             "mana": 4,
             "damage": 0,
+            "summonAbility": function(game, player, card) {
+                let playerCard = player.mana.drawCard();
+
+                if (playerCard !== undefined) {
+                    playerCard.canAttack = true;
+                    player.shields.addCard(playerCard);
+                }
+            }
         },
         {
             "name": "Mystic_Inscription",
             "mana": 6,
             "damage": 0,
+            "summonAbility": function(game, player, card) {
+                let playerCard = player.deck.drawCard();
+
+                if (playerCard !== undefined) {
+                    player.shields.addCard(playerCard);
+                }
+            }
         },
         {
             "name": "Rainbow_Stone",
             "mana": 4,
             "damage": 0,
-        },
+            "summonAbility": function(game, player, card) {
+                let playerCard = player.deck.drawCard();
 
+                if (playerCard !== undefined) {
+                    player.mana.addCard(playerCard);
+                }
+            }
+        },
         {
             "name": "Roar_of_the_Earth",
             "mana": 2,
             "damage": 0,
-        },
-        {
-            "name": "Spiral_Gate",
-            "mana": 2,
-            "damage": 0,
-        },
-        {
-            "name": "Teleportation",
-            "mana": 5,
-            "damage": 0,
-        },
-        {
-            "name": "Terror_Pit",
-            "mana": 6,
-            "damage": 0,
-        },
-        {
-            "name": "Virtual_Tripwire",
-            "mana": 3,
-            "damage": 0,
+            "summonAbility": function(game, player, card) {
+                let removedCard = undefined;
+
+                for (let i = player.mana.cards.length - 1; i >= 0; i--) {
+                    let manaCard = player.mana.cards[i];
+
+                    if (manaCard.manaCost <= 6 && manaCard.damage !== 0) {
+                        removedCard = player.mana.removeCard(i);
+                        break;
+                    }
+                }
+
+                if (removedCard !== undefined) {
+                    player.hand.addCard(removedCard);
+                }
+            }
         },
         {
             "name": "Searing_Wave",
             "mana": 5,
             "damage": 0,
+            "summonAbility": function(game, player, card) {
+                let opponent = undefined;
+
+                if (player.name === "PC") {
+                    opponent = game.player;
+                } else {
+                    opponent = game.pc;
+                }
+
+                for (let i = opponent.battleZone.cards.length - 1; i >= 0; i--) {
+                    let opponentCard = opponent.battleZone.cards[i];
+
+                    if (opponentCard.damage <= 3000) {
+                        let removedCard = opponent.battleZone.removeCard(i);
+                        opponent.graveyard.addCard(removedCard);
+                    }
+                }
+            }
         },
         {
             "name": "Sundrop_Armor",
             "mana": 4,
             "damage": 0,
-        },
+            "summonAbility": function(game, player, card) {
+                let playerCard = player.hand.drawCard();
 
+                if (playerCard !== undefined) {
+                    player.shields.addCard(playerCard);
+                }
+            }
+        },
     ]
 };
 
